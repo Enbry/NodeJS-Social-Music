@@ -20,20 +20,22 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-var sess = {
- secret: 'social-music-api',
- cookie: {},
- resave: false,
- saveUninitialized: true
-};
-app.use(session(sess));
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+var sess = {
+  secret: 'social-music-api',
+  cookie: {},
+  resave: false,
+  saveUninitialized: true
+};
+app.use(session(sess));
+app.use(express.static(path.join(__dirname, 'public')));;
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 
 passport.serializeUser(function(user, done) {
  done(null, user);
@@ -46,27 +48,36 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var verifyAuth = function(req, res, next) {
- if (req.originalUrl === '/signup' || req.originalUrl === '/login') {
- return next();
- }
- if (req.isAuthenticated()) {
- return next();
- }
- if (req.accepts('text/html')) {
- return res.redirect('/login');
- }
- if (req.accepts('application/json')) {
- res.set('Location', '/login');
- return res.status(401).send({err: 'User should be logged'});
- }
+    res.locals.user_session = false;
+    res.locals.user_admin = false;
+    if (req.originalUrl === '/signup' || req.originalUrl === '/login') {
+        return next();
+    }
+    if (req.isAuthenticated()) {
+        res.locals.user_session = true;
+        res.locals.user_admin = (req.user.username === 'admin');
+        return next();
+    }
+    if (req.accepts('text/html')) {
+        return res.redirect('/login');
+    }
+    if (req.accepts('application/json')) {
+        res.set('Location', '/login');
+        return res.status(401).send({err: 'User should be logged'});
+    }
 };
 app.use(verifyAuth);
 
 app.use('/', routes);
+app.use('/login', login);
 app.use('/users', users);
 app.use('/songs', songs);
 app.use('/signup', signup);
-app.use('/login', login);
+
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/login');
+});
 
 
 // catch 404 and forward to error handler

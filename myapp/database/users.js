@@ -5,6 +5,7 @@ var userSchema = mongoose.Schema({
  password: {type: String, required: true, select: false},
  displayName: {type: String, required: true},
  favoriteSongs: [String],
- createdAt: {type: Date, required: true, 'default': Date.now}
+ createdAt: {type: Date, required: true, 'default': Date.now},
+ isAdmin: { type: Boolean, default: false }
 });
 module.exports = mongoose.model('user', userSchema);

@@ -1,10 +1,9 @@
 {
   "name": "project",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +11,23 @@
     "bootstrap": "^3.3.6",
     "express": "^4.13.4",
     "lodash": "^4.0.1",
+    "materialize": "^1.0.0",
     "request": "^2.67.0"
-  }
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Noemie35/project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Noemie35/project/issues"
+  },
+  "homepage": "https://github.com/Noemie35/project#readme",
+  "description": ""
 }
