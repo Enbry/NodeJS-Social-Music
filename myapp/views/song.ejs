@@ -70,7 +70,7 @@
 
     <div class="col s12 favorite">
         <% if (!Vote) { %>
-        <form action="/songs/<%=song._id%>/favorites" method="post">
+        <form action="/songs/<%=song._id%>/favorite" method="post">
            <button type="submit" class="btn light-blue lighten-1">Ajouter aux favoris</button>
         </form>
         <% } else { %>

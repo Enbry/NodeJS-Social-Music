@@ -246,7 +246,7 @@ router.post('/:id/note', function(req, res) {
 })
 
 router.post('/:id/favorite', function(req, res) {
-    UsersService.addFavoritesToUser(req.user._id, req.params.id)
+    UsersService.addFavorites(req.user._id, req.params.id)
         .then(function(user) {
             if (req.accepts('text/html')) {
                 return res.redirect("/songs/" + req.params.id);
