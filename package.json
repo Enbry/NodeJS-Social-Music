@@ -16,18 +16,19 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "mongoose": "^4.4.4"
   },
   "directories": {
     "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Noemie35/project.git"
+    "url": "git+https://github.com/Noemie35/NodeJS-Social-Music.git"
   },
   "bugs": {
-    "url": "https://github.com/Noemie35/project/issues"
+    "url": "https://github.com/Noemie35/NodeJS-Social-Music/issues"
   },
-  "homepage": "https://github.com/Noemie35/project#readme",
+  "homepage": "https://github.com/Noemie35/NodeJS-Social-Music#readme",
   "description": ""
 }

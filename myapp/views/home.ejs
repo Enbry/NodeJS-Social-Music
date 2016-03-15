@@ -1,0 +1,63 @@
+<% include partials/header %>
+<div class="row">
+  <div class="col s7 offset-s2 chart">
+    <div class="col s3">
+      <img src="img/chart.jpg" alt="" class="responsive-img"> <!-- notice the "circle" class -->
+    </div>
+    <div class="col s5">
+      <h3 class="black-text">
+        TOP 5
+      </h3>
+      <a href="/songs/"class="waves-effect waves-light btn light-blue lighten-1"><i class="material-icons right">queue_music</i>Voir toutes les chansons</a>
+    </div>
+      <table class="responsive-table bordered">
+          <thead>
+              <tr>
+                  <th data-field="title">Titre</th>
+                  <th data-field="album">Album</th>
+                  <th data-field="artist">Artiste</th>
+                  <th data-field="Year">Année</th>
+                  <th data-field="BPM">BPM</th>
+                  <th data-field="Note">Note</th>
+              </tr>
+          </thead>
+          <% top5.forEach(function(top) {%>
+              <tr>
+                  <td>
+                      <a href="/songs/<%=top._id%>"><%=top.song.title%></a>
+                  </td>
+                  <td><%=top.song.album%></td>
+                  <td><%=top.song.artist%></td>
+                  <td>
+                      <% if (top.song.year) { %><%=top.song.year%><% } %>
+                  </td>
+                  <td>
+                      <% if (top.song.bpm) { %><%=top.song.bpm%><% } %>
+                  </td>
+                  <td>
+                    <%= top.avgNote %>
+                  </td>
+              </tr>
+          <% }) %>
+      </table>
+  </div>
+  <div class="col s2 offset-s1 user-new">
+    <h4 class="center">Nouveaux inscrits</h4>
+    <ul class="collection">
+        <% lastUser.forEach(function(user) {%>
+            <li class="collection-item avatar">
+              <img src="http://lorempixel.com/400/200" alt="" class="circle">
+              <span class="title"> <a href="/users/<%=user._id%>"><%=user.displayName%></a></span>
+              <p><em><%=user.username%></em></p>
+              <a href="/users/<%=user._id%>" class="secondary-content"><i class="material-icons">people_outline</i></a>
+            </li>
+        <% }) %>
+    </ul>
+  </div>
+</div>
+
+
+
+
+
+<% include partials/footer %>

@@ -3,16 +3,19 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var passport = require('passport');
+var authentication = require('./services/authentication');
 var session = require('express-session');
-var database = require('./database');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var songs = require('./routes/songs');
 var signup = require('./routes/signup');
 var login = require('./routes/login');
-var passport = require('passport');
-var authentication = require('./services/authentication');
+var database = require('./database');
+
 var app = express();
 
 
@@ -32,6 +35,7 @@ var sess = {
   saveUninitialized: true
 };
 app.use(session(sess));
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));;
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -56,6 +60,7 @@ var verifyAuth = function(req, res, next) {
     if (req.isAuthenticated()) {
         res.locals.user_session = true;
         res.locals.user_admin = (req.user.username === 'admin');
+        res.locals.user = req.user;
         return next();
     }
     if (req.accepts('text/html')) {

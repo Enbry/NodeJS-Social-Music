@@ -2,6 +2,8 @@ var express = require('express');
 var _ = require('lodash');
 var router = express.Router();
 var SongService = require('../services/songs');
+var NoteService = require('../services/notes');
+var UsersService = require('../services/users');
 
 var verifyIsAdmin = function(req, res, next) {
     if (req.isAuthenticated() && req.user.username === 'admin') {
@@ -14,7 +16,17 @@ var verifyIsAdmin = function(req, res, next) {
 
 router.get('/', function(req, res) {
     if (req.accepts('text/html') || req.accepts('application/json')) {
-        SongService.find(req.query || {})
+
+        var keys = ["title", "album", "artist", "year", "bpm"];
+        var params = {};
+
+        keys.forEach(function(key) {
+            if (req.query[key]) {
+                params[key] = req.query[key];
+            }
+        })
+
+        SongService.find(params)
             .then(function(songs) {
                 if (req.accepts('text/html')) {
                     return res.render('songs', {songs: songs});
@@ -52,15 +64,22 @@ router.get('/:id', function(req, res) {
                     return;
                 }
                 if (req.accepts('text/html')) {
-                    return res.render('song', {song: song});
+                    var note = { username: req.user.username, song: song._id, };
+                    NoteService.notes().findOne(note, function(err, userNote) {
+                            var Vote = (req.user.favoriteSongs.indexOf(String(song._id)) >= 0);
+                            res.render('song', {song: song, note: userNote, Vote: Vote});
+                        }
+                    );
+                    return;
                 }
                 if (req.accepts('application/json')) {
-                    return res.send(200, song);
+                    res.status(200).send(song);
+                    return;
                 }
             })
             .catch(function(err) {
                 console.log(err);
-                res.status(500).send(err);
+                return res.status(500).send(err);
             })
         ;
     }
@@ -182,5 +201,91 @@ router.delete('/:id', verifyIsAdmin, function(req, res) {
         })
     ;
 });
+router.post('/:id/note', function(req, res) {
+    SongService.findOneByQuery({_id: req.params.id})
+        .then(function(song) {
+            if (!song) {
+                res.status(404).send({err: 'No song found with id' + req.params.id});
+                return;
+            }
+            var newNote = { username: req.user.username, song: song._id, };
+
+            NoteService.findOneByQuery(newNote)
+                .then(function(note) {
+                    if (note) {
+                        res.status(403).send();
+                        return;
+                    }
+                    newNote.note = req.body.note;
+                    NoteService.create(newNote)
+                        .then(function(note) {
+                            if (req.accepts('text/html')) {
+                                return res.redirect('/songs/' + song._id);
+                            }
+
+                            if (req.accepts('application/json')) {
+                                return res.status(200).send(song);
+                            }
+                        })
+                        .catch(function(err) {
+                            res.status(500).send(err);
+                        })
+                    ;
+
+                })
+                .catch(function(err) {
+                    res.status(500).send(err);
+                })
+            ;
+        })
+        .catch(function(err) {
+            console.log(err);
+            res.status(500).send(err);
+        })
+    ;
+})
+
+router.post('/:id/favorite', function(req, res) {
+    UsersService.addFavoritesToUser(req.user._id, req.params.id)
+        .then(function(user) {
+            if (req.accepts('text/html')) {
+                return res.redirect("/songs/" + req.params.id);
+            }
+            if (req.accepts('application/json')) {
+                res.status(201).send(user);
+            }
+        })
+        .catch(function(err) {
+            res.status(500).send(err);
+        })
+    ;
+});
+
+router.delete('/all/favorites', function(req, res) {
+    UsersService.deleteAllFavorites(req.user._id)
+        .then(function(user) {
+            if (req.accepts('application/json')) {
+                res.status(204).send();
+            }
+        })
+        .catch(function(err) {
+            res.status(500).send(err);
+        })
+    ;
+});
+
+router.delete('/:id/favorite', function(req, res) {
+    UsersService.deleteFavorite(req.user._id, req.params.id)
+        .then(function(user) {
+            if (req.accepts('application/json')) {
+                res.status(204).send();
+            }
+        })
+        .catch(function(err) {
+            res.status(500).send(err);
+        })
+    ;
+});
+
 
 module.exports = router;

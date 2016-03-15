@@ -26,7 +26,7 @@ var bodyVerificator = function(req, res, next) {
             next();
         }
         else {
-            var error = mandatoryAttributes.toString() + ' are mandatory';
+            var error = mandatoryAttributes.toString() + ' sont des champs obligatoires';
             if (req.accepts('text/html')) {
                 req.session.err = error;
                 res.redirect('/signup');

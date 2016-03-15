@@ -7,6 +7,7 @@
  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">-->
 
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
  <!-- HTML5 shim, for IE6-8 support of HTML elements -->
@@ -14,23 +15,42 @@
  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
  <![endif]-->
  </head>
- <body class="black white-text">
-   <div class="navbar-fixed">
-    <nav class="cyan lighten-2">
-      <div class="nav-wrapper">
-        <ul class="right hide-on-med-and-down">
-          <li><a href="#">Musithèque</a></li>
-          <li><a href="#">Réseau</a></li>
-          <li><a href="#">Mon compte</a></li>
-          <% if (user_session) {%>
-          <li class="active"><a href="/logout">Déconnexion</a></li>
-          
-          <% }else{ %>
-          <li class="active"><a href="/logout">Connexion</a></li>
-          <%}%>
-
-
-        </ul>
-      </div>
-    </nav>
+ <body class="">
+  <ul id="dropdown1" class="dropdown-content blue-grey darken-3">
+    <li class="active blue-grey darken-2 "><a href="/users/me" class="white-text"><i class="material-icons left">account_circle</i> Mon compte</a></li>
+    <li class="divider"></li>
+    <li class="active blue-grey darken-2"><a href="/logout" class="white-text"> <i class="material-icons left">lock_outline</> </i>Déconnexion</a></li>
+  </ul>
+<nav class="blue-grey darken-3">
+  <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+  <div class="nav-wrapper">
+    <h1 class="brand-logo center">SOCIAL MUSIC</h1>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <% if (user_session) {%>
+        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Bienvenue <%=user.username%><i class="material-icons right">arrow_drop_down</i></a></li>
+      <% }else{ %>
+        <li class="active"><a href="/login" class="white-text"><i class="material-icons left">lock_open</i> Connexion</a></li>
+      <%}%>
+    </ul>
   </div>
+</nav>
+
+<ul id="nav-mobile" class="side-nav fixed blue-grey darken-3">
+
+  <li ><a href="/" class="white-text"><i class="material-icons left">home</i> Accueil</a></li>
+  <li><a href="/songs" class="white-text"><i class="material-icons left">insert_chart</i> Musithèque</a></li>
+  <li><a href="/users" class="white-text"><i class="material-icons left">group</i> Réseau</a></li>
+</ul>
+<ul class="side-nav grey darken-3" id="mobile-demo">
+  <li><a href="/"><i class="material-icons left">home</i> Accueil</a></li>
+  <li><a href="/songs"><i class="large material-icons left">insert_chart</i> Musithèque</a></li>
+  <li><a href="/users"><i class="material-icons left">group</i> Réseau</a></li>
+  <li><a href="/users/me"><i class="material-icons left">account_circle</i>Mon compte</a></li>
+  <% if (user_session) {%>
+  <li class="active"><a href="/logout"><%=user.username%> <br><i class="material-icons left">lock_outline</i>Déconnexion</a></li>
+  <% }else{ %>
+  <li class="active"><a href="/login"><i class="material-icons left">lock_open</i> Connexion</a></li>
+  <%}%>
+</ul>
+
+<main>

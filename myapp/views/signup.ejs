@@ -1,23 +1,29 @@
 <% include partials/header %>
-<%if (err) {%>
-    <div style="color:red"><%=err%></div>
-<%} %>
-<hr/>
-<form action="/signup" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" name="username"/>
+<div class="container">
+  <div class="row login">
+    <div class="col s4 offset-s4">
+        <h1 class="center">INSCRIPTION</h1>
+        <%if (err) {%>
+          <div style="color:red"><%=err%></div>
+        <%} %>
+            <form action="/signup" method="post">
+                <div>
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" class="validate" name="username" id="username" placeholder="Nom d'utilisateur">
+                </div>
+                <div class="col-sm-10">
+                  <label for="username">Pseudo</label>
+                    <input type="text" class="form-control" name="displayName" id="displayName" placeholder="Pseudo">
+                </div>
+                <div>
+                    <label for="password">Mot de passe</label>
+                      <input type="password" class="validate" name="password" id="password" placeholder="Mot de passe">
+                </div>
+                <div>
+                    <button type="submit" class="waves-effect waves-light btn light-blue btn-large lighten-1 center-align">S'inscrire</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div>
-        <label>Display Name:</label>
-        <input type="text" name="displayName"/>
-    </div>
-    <div>
-        <label>Password:</label>
-        <input type="password" name="password"/>
-    </div>
-    <div>
-        <input type="submit" value="S’inscrire"/>
-    </div>
-</form>
+  </div>
 <% include partials/footer %>

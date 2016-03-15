@@ -11,11 +11,10 @@ module.exports.songApiLocalStrategy = function() {
             .exec(function (err, user) {
                 if (err) { return done(err); }
                 if (!user) {
-                    console.log('Incorrect username.');
-                    return done(null, false, { message: 'Incorrect username.' });
+                    return done(null, false, { message: 'Mauvais nom d\'utilisateur' });
                 }
                 if (!bcrypt.compareSync(password, user.password)) {
-                    return done(null, false, { message: 'Incorrect password.' });
+                    return done(null, false, { message: 'Mauvais mot de passe' });
                 }
                 return done(null, user);
             });

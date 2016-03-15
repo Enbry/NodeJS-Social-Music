@@ -1,5 +1,10 @@
 <% include partials/header %>
- <h1>Compte créé pour <%=user.username%></h1>
- <hr/>
- <a href='/login'>Se connecter</a>
+<div class="container">
+  <div class="row register">
+    <div class="col s7 offset-s3">
+         <h2 class="center">Bienvenue sur Social Music <%=user.username%></h2>
+     <a href='/login' class="waves-effect waves-light btn light-blue btn-large lighten-1 center-align">Se connecter</a>
+   </div>
+ </div>
+</div>
 <% include partials/footer %>

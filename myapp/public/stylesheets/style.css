@@ -1,21 +1,118 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
-
 a {
   color: #00B7FF;
 }
-
-table{
-  width: 50%;
+main {
+  flex: 1 0 auto;
+  background: url('../img/background.jpg') no-repeat;
+  background-size: cover;
 }
-table, th, td{
-  padding: 1%;
-  border: solid 1px black;
-  border-collapse: collapse;
+table, form.form-bg{
+  background-color: rgba(0, 0, 0, 0.61);
 }
-
+form.form-bg{
+    color: #fff;
+    padding: 6% 6% 10% 6%;
+}
+form .btn{
+  margin-top: 3%;
+}
 th{
-  background-color: rgba(134, 33, 65, 0.77);
+  text-transform: uppercase;
+  color: #BCA3A3;
+}
+td{
   color: #fff;
+}
+table.bordered>thead>tr, table.bordered>tbody>tr {
+    border-bottom: 1px solid rgba(208, 208, 208, 0.18)!important;
+}
+hr{
+  width: 40%;
+  margin: auto;
+}
+hr:nth-child(3){
+  margin-top: 5%;
+}
+a{
+  color: inherit!important;
+}
+.chart{
+  margin-top: 3%;
+  padding: 0!important;
+}
+.chart .s3, .playlist .s3, .account .s12{
+  padding: 0!important;
+      margin-bottom: 2%;
+}
+.chart .s3 img, .playlist .s3 img, .account .s6 img{
+  opacity: 0.7;
+}
+.chart .s5 h3, .playlist .s5 h3, .account .s6 h3{
+  margin-left: 2%;
+  margin-top: 0;
+}
+.account .s5 h3{
+  margin-top: 0;
+}
+.account .btn{
+  margin-top: 15%;
+}
+.chart .btn, .user-new .btn, .playlist .btn, .song-search .btn, .edit .btn, .account .btn, .login .btn, .register .btn{
+  border-radius: 22px;
+  color: #fff!important;
+}
+.material-icons{
+  line-height: inherit!important;
+}
+.nav-wrapper h1{
+  margin: 1.1rem 0 1.68rem 0;
+}
+
+.user-new, .song-search{
+  background-color: rgba(0, 0, 0, 0.61);
+  color: #fff;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.user-new i{
+  font-size: 2.7em;
+  line-height: 1!important;
+}
+.login .btn{
+  margin-left: 28%!important;
+}
+.register{
+  margin-top: 5%;
+}
+.register .btn{
+  margin-left: 40%;
+  margin-top: 3%;
+}
+.collection .collection-item.avatar{
+  background-color: inherit;
+  border-top: 1px solid #e0e0e0;
+}
+.collection{
+  border: none!important;
+}
+.favorite{
+  margin-top: 25%;
+  margin-left:8%!important;
+}
+.note{
+  margin-top: 25%;
+
+}
+.actions a{
+  margin:2% 0;
+}
+footer.page-footer{
+  padding-top: 0!important;
+  margin-top: 0!important;
 }
