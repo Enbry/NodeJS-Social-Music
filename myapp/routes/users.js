@@ -32,6 +32,9 @@ router.get('/me', function(req, res) {
     if (req.accepts('text/html') || req.accepts('application/json')) {
         if (req.accepts('text/html')) {
             res.render('user', {account: req.user});
+            // sur ton compte il manque des infos sur les chansons choisies comme favories
+            // t'aurais du faire un Songs.find({_id: {$in: req.user.favoritesSongs}}) par exemple
+            // bon, cela si t'avais mis à jour aussi le req.user.favoritesSongs comme je l'ai indiqué dans un autre commentaire
             return;
         }
 
@@ -48,6 +51,8 @@ router.get('/me', function(req, res) {
 router.get('/:id', function(req, res) {
     if (req.accepts('text/html') || req.accepts('application/json')) {
         UsersService.findOneByQuery({_id: req.params.id})
+        // tu ne fais pas le chargement des chasons choisies par l'user comme favories, du coup
+        // on ne dispose pas de ces infos pour les afficher dans la vue
             .then(function(user) {
                 if (!user) {
                     res.status(404).send({err: 'No user found with id' + req.params.id});

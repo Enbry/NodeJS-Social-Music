@@ -43,6 +43,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/add', function(req, res) {
+    // pas de verification d'accès à cet endpoint pour un admin, tout le monde peut acceder
     var song = (req.session.song) ? req.session.song : {};
     var err = (req.session.err) ? req.session.err : null;
     if (req.accepts('text/html')) {
@@ -65,6 +66,7 @@ router.get('/:id', function(req, res) {
                 }
                 if (req.accepts('text/html')) {
                     var note = { username: req.user.username, song: song._id, };
+                    // Attention avec les virgules en trop dans les objets JSON
                     NoteService.notes().findOne(note, function(err, userNote) {
                             var Vote = (req.user.favoriteSongs.indexOf(String(song._id)) >= 0);
                             res.render('song', {song: song, note: userNote, Vote: Vote});
@@ -202,6 +204,7 @@ router.delete('/:id', verifyIsAdmin, function(req, res) {
     ;
 });
 router.post('/:id/note', function(req, res) {
+    // t'aurais pu aussi indiquer dans l'url l'user qui faisait l'évaluation
     SongService.findOneByQuery({_id: req.params.id})
         .then(function(song) {
             if (!song) {
@@ -209,6 +212,7 @@ router.post('/:id/note', function(req, res) {
                 return;
             }
             var newNote = { username: req.user.username, song: song._id, };
+            // virgule en trop
 
             NoteService.findOneByQuery(newNote)
                 .then(function(note) {
@@ -246,8 +250,14 @@ router.post('/:id/note', function(req, res) {
 })
 
 router.post('/:id/favorite', function(req, res) {
+    // cette url me pose un problème parce que la resource modifié est l'user et pas la chanson
+    // du coup, t'aurais du faire quelque chose comme /user/:user_id/song/song_id:/favorites
     UsersService.addFavorites(req.user._id, req.params.id)
         .then(function(user) {
+            // tu fais l'enregistrement en base, mais il a manqué une mise à jour de ton objet req.user
+            // req.user.favoritesSongs = user.favoritesSongs
+            // vu que l'user retourné dans la callback a les infos à jour
+            // cela éviter de devoir se deconnecter et connecter pour voir le bouton de suppression des favoris
             if (req.accepts('text/html')) {
                 return res.redirect("/songs/" + req.params.id);
             }
@@ -262,6 +272,7 @@ router.post('/:id/favorite', function(req, res) {
 });
 
 router.delete('/all/favorites', function(req, res) {
+    // l'url ne fait pas reference à l'user qui supprime, et surtout ce que l'user la ressource principale
     UsersService.deleteAllFavorites(req.user._id)
         .then(function(user) {
             if (req.accepts('application/json')) {
