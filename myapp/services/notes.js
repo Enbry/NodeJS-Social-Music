@@ -12,4 +12,6 @@ exports.create = function(notes) {
 
 exports.notes = function() {
     return Notes;
+    // je vois pas l'intéret de faire ça, on ne renvoie pas l'objet Dao, on peut juste exposer quelques méthodes
+    // si c'est pour faire ça, autant appeler database/notes directement dans les routes
 }
